@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const chefUserName = ref('');
 
+const dataLength = ref(0);
+
 const minNumber = ref(0);
 
 const maxNumber = ref(999999999);
@@ -32,6 +34,7 @@ const submitForm = async () => {
     console.log(response.data.DishesData);
     dishesAll.value = response.data.DishesData;
     dishesData.value = response.data.DishesData;
+    dataLength.value = dishesData.value.length;
     chefUserName.value = '';
     webUserName.value = '';
   } catch (error) {
@@ -42,8 +45,9 @@ const filterForm = () => {
   const filteredData = dishesAll.value.filter((dish) => {
     return dish.dishUnitPrice >= minNumber.value && dish.dishUnitPrice <= maxNumber.value;
   });
-  dishesData.value = filteredData;
-  console.log(filteredData.length);
+    dishesData.value = filteredData;
+    dataLength.value = dishesData.value.length;
+    console.log(filteredData.length);
 };
 
 
@@ -59,6 +63,10 @@ const filterForm = () => {
         
             <button type="submit">Display Time Sheet</button>
         </form>
+        <div class="length">
+            <h3>Total length of data is: </h3>
+            <h3>{{ dataLength }}</h3>
+        </div>
         <form action="" class="new-form" @submit.prevent="filterForm">
             <div class="form-div">
                 <label>Minimum Price</label>
@@ -97,6 +105,18 @@ const filterForm = () => {
 
 
 <style scoped>
+
+.length {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+h3 {
+    font-weight: bold;
+    text-align: center;
+    margin: 10px;
+}
 .new-form {
     display: flex;
     text-align: left;
@@ -155,9 +175,10 @@ input {
 button {
   color: white;
   margin-top: 25px;
+  padding: 10px;
   background: #009879;
   height: 50px;
-  min-width: 250px;
+  min-width: 200px;
   max-width: 300px ;
   border-radius: 50px;
   cursor: pointer;
